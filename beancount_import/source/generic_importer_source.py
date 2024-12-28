@@ -21,8 +21,8 @@ from typing import Hashable, List, Dict, Optional
 from beancount.core.data import Balance, Transaction, Posting,  Directive
 from beancount.core.amount import Amount
 from beancount.core.convert import get_weight
-from beancount.ingest.importer import ImporterProtocol
-from beancount.ingest.cache import get_file
+from beangulp.importer import ImporterProtocol
+from beangulp.cache import get_file
 from beancount.parser.booking_full import convert_costspec_to_cost
 
 from ..matching import FIXME_ACCOUNT, SimpleInventory
@@ -54,14 +54,14 @@ class ImporterSource(DescriptionBasedSource):
 
     @property
     def name(self) -> str:
-        return self.importer.name()
+        return self.importer.name
 
     def prepare(self, journal: 'JournalEditor', results: SourceResults) -> None:
         results.add_account(self.account)
 
         entries = OrderedDict() #type: Dict[Hashable, List[Directive]]
         for f in self.files:
-            f_entries = self.importer.extract(f, existing_entries=journal.entries)
+            f_entries = self.importer.extract(f, existing=journal.entries)
             # collect  all entries in current statement, grouped by hash
             hashed_entries = OrderedDict() #type: Dict[Hashable, Directive]
             for entry in f_entries:
