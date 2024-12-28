@@ -1279,8 +1279,7 @@ class ParsedOfxFile(object):
 
         with open(filename, 'r') as f:
             contents = f.read()
-        # A byte string passed to BeautifulSoup is assumed to be UTF-8
-        soup = bs4.BeautifulSoup(contents, 'html.parser')
+        soup = bs4.BeautifulSoup(contents, 'lxml')
 
         # Get the description of securities used in this file.
         securities_map = {s.uniqueid: s for s in get_securities(soup)}
